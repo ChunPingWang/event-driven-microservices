@@ -10,8 +10,7 @@ import io.cucumber.java.zh_tw.假設;
 import io.cucumber.java.zh_tw.當;
 import io.cucumber.java.zh_tw.那麼;
 import io.cucumber.java.zh_tw.而且;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
+// Spring imports not needed for step definitions since configuration is in CucumberSpringConfiguration
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
@@ -19,8 +18,6 @@ import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.yml")
 public class PaymentProcessingStepDefinitions {
 
     private String orderId;
@@ -37,6 +34,7 @@ public class PaymentProcessingStepDefinitions {
     private int retryCount = 0;
     private final int maxRetries = 3;
 
+    // Create instances manually for BDD tests (domain logic testing)
     private final CreditCardValidator creditCardValidator = new CreditCardValidatorImpl();
     private final PaymentDomainService paymentDomainService = new PaymentDomainServiceImpl(creditCardValidator);
 

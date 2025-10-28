@@ -2,11 +2,15 @@ package com.example.paymentservice.bdd;
 
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 @CucumberContextConfiguration
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(locations = "classpath:application-test.yml")
+@SpringBootTest(
+    classes = BddTestConfiguration.class,
+    webEnvironment = SpringBootTest.WebEnvironment.NONE,
+    properties = {
+        "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration"
+    }
+)
 public class CucumberSpringConfiguration {
-    // This class provides Spring context configuration for Cucumber tests
+    // Minimal Spring context excluding problematic auto-configurations
 }

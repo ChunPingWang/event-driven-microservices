@@ -133,30 +133,30 @@
   - 運行 Outbox Pattern 一致性測試
   - _需求: 需求7_
 
-- [ ] 5. 實現六角形架構的應用層
+- [x] 5. 實現六角形架構的應用層
   - 創建應用服務、命令處理器和查詢處理器
   - 實現端口接口和適配器模式
   - _需求: 需求5_
 
-- [ ] 5.1 實現訂單應用服務
+- [x] 5.1 實現訂單應用服務
   - 創建 OrderApplicationService 協調訂單業務流程
   - 實現 CreateOrderCommand 和 OrderCommandHandler
   - 定義訂單相關的端口接口
   - _需求: 需求1, 需求5_
 
-- [ ] 5.2 實現支付應用服務
+- [x] 5.2 實現支付應用服務
   - 創建 PaymentApplicationService 處理支付流程
   - 實現 ProcessPaymentCommand 和 PaymentCommandHandler
   - 定義支付相關的端口接口
   - _需求: 需求3, 需求5_
 
-- [ ] 5.3 創建查詢處理器
+- [x] 5.3 創建查詢處理器
   - 實現 OrderQueryHandler 處理訂單查詢
   - 實現 PaymentQueryHandler 處理支付查詢
   - 定義查詢 DTO 和響應模型
   - _需求: 需求1, 需求3_
 
-- [ ]* 5.4 編寫應用服務單元測試
+- [x] 5.4 編寫應用服務單元測試
   - 測試命令處理邏輯和業務流程協調
   - 測試查詢處理和數據轉換
   - 使用 Mock 隔離外部依賴
