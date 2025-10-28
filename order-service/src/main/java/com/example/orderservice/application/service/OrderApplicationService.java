@@ -121,4 +121,49 @@ public class OrderApplicationService implements OrderUseCase {
             throw new RuntimeException("Failed to handle payment failure", e);
         }
     }
+    
+    /**
+     * 處理支付成功
+     */
+    @Transactional
+    public void handlePaymentSuccess(String orderId, String paymentId, String transactionId) {
+        handlePaymentConfirmation(orderId, paymentId, transactionId);
+    }
+    
+    /**
+     * 處理支付取消
+     */
+    @Transactional
+    public void handlePaymentCancellation(String orderId, String transactionId) {
+        log.info("Handling payment cancellation for order: {}, transaction: {}", orderId, transactionId);
+        
+        try {
+            OrderId orderIdVO = new OrderId(orderId);
+            Order order = orderRepository.findById(orderIdVO)
+                .orElseThrow(() -> new RuntimeException("Order not found: " + orderId));
+            
+            // 驗證交易ID匹配
+            if (!transactionId.equals(order.getTransactionId())) {
+                throw new IllegalArgumentException(
+                    String.format("Transaction ID mismatch. Expected: %s, Actual: %s", 
+                        order.getTransactionId(), transactionId));
+            }
+            
+            // 取消訂單
+            order.cancel();
+            
+            // 保存訂單
+            orderRepository.save(order);
+            
+            // 發布領域事件
+            domainEventPublisher.publishEvents(order.getDomainEvents());
+            order.clearDomainEvents();
+            
+            log.info("Payment cancellation handled successfully for order: {}", orderId);
+            
+        } catch (Exception e) {
+            log.error("Failed to handle payment cancellation for order: {}", orderId, e);
+            throw new RuntimeException("Failed to handle payment cancellation", e);
+        }
+    }
 }

@@ -162,36 +162,36 @@
   - 使用 Mock 隔離外部依賴
   - _需求: 需求7_
 
-- [ ] 6. 實現基礎設施層適配器
+- [x] 6. 實現基礎設施層適配器
   - 創建數據庫適配器、消息適配器和外部服務適配器
   - 實現 Repository 模式和 Outbox Pattern
   - _需求: 需求6, 需求8_
 
-- [ ] 6.1 實現數據庫適配器
+- [x] 6.1 實現數據庫適配器
   - 創建 JPA 實體映射和 Repository 實現
   - 實現 OrderRepositoryImpl 和 PaymentRepositoryImpl
   - 配置數據庫連接池和事務管理
   - _需求: 需求6_
 
-- [ ] 6.2 實現 Outbox Pattern
+- [x] 6.2 實現 Outbox Pattern
   - 創建 OutboxEvent 實體和 OutboxRepository
   - 實現 OutboxPublisher 定時任務
   - 確保數據庫操作和消息發送的強一致性
   - _需求: 需求8_
 
-- [ ] 6.3 實現 RabbitMQ 消息適配器
+- [x] 6.3 實現 RabbitMQ 消息適配器
   - 創建 MessagePublisherImpl 發送消息
   - 實現 PaymentRequestListener 監聽支付請求
   - 實現 PaymentConfirmationListener 監聽支付確認
   - _需求: 需求2, 需求3_
 
-- [ ] 6.4 實現重試機制
+- [x] 6.4 實現重試機制
   - 創建 PaymentRetryService 處理支付重試
   - 實現指數退避算法和最大重試限制
   - 記錄重試歷史和狀態追蹤
   - _需求: 需求2_
 
-- [ ]* 6.5 編寫基礎設施層集成測試
+- [x] 6.5 編寫基礎設施層集成測試
   - 測試數據庫操作和事務處理
   - 測試消息發送和接收功能
   - 使用 Testcontainers 進行集成測試

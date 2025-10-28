@@ -111,6 +111,11 @@ public class BddTestConfiguration {
             public void publishPaymentConfirmation(PaymentConfirmation confirmation) {
                 // Mock implementation - do nothing
             }
+            
+            @Override
+            public void publishPaymentConfirmation(String confirmationJson) {
+                // Mock implementation - do nothing
+            }
         };
     }
 }
