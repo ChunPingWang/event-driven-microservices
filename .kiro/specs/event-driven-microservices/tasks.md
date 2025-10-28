@@ -45,24 +45,24 @@
   - 測試日誌記錄功能
   - _需求: 需求7_
 
-- [ ] 2. 建立項目基礎架構
+- [x] 2. 建立項目基礎架構
   - 創建訂單服務和支付服務的基礎項目結構
   - 配置 Gradle 多模塊構建和依賴管理
   - _需求: 需求5_
 
-- [ ] 2.1 創建 Gradle 多模塊項目
+- [x] 2.1 創建 Gradle 多模塊項目
   - 設置根項目和子模塊 (order-service, payment-service)
   - 配置共用依賴和版本管理
   - 引入日誌 Starter 依賴
   - _需求: 需求5_
 
-- [ ] 2.2 配置 Spring Boot 基礎設置
+- [x] 2.2 配置 Spring Boot 基礎設置
   - 創建 Application 主類和基礎配置
   - 配置多環境 Profile (dev, test, sit, prod)
   - 設置 H2 和 PostgreSQL 數據源配置
   - _需求: 需求5_
 
-- [ ] 2.3 集成 RabbitMQ 配置
+- [x] 2.3 集成 RabbitMQ 配置
   - 配置 RabbitMQ 連接和隊列定義
   - 設置死信隊列和重試機制
   - 配置消息序列化和反序列化
