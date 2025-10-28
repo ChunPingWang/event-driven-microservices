@@ -1,0 +1,5 @@
+rootProject.name = 'event-driven-microservices'
+
+include 'microservice-logging-starter'
+include 'order-service'
+include 'payment-service'

@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  h2:
+    console:
+      enabled: false
+
+microservice:
+  logging:
+    enabled: true
+    log-request-payload: true
+    log-response-payload: true
+    log-message-payload: true
+    log-message-headers: false
+    max-payload-length: 10000
+    log-execution-time: true
+    log-processing-time: true
+    slow-request-threshold: 5000
+    slow-message-threshold: 3000
+    async-logging: false
+    async-thread-pool-size: 5
+
+logging:
+  level:
+    com.example.logging: DEBUG
+    org.springframework: WARN
+    org.hibernate: WARN

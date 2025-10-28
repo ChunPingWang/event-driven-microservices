@@ -1,0 +1,20 @@
+# 微服務日誌記錄默認配置
+microservice:
+  logging:
+    enabled: true
+    log-request-payload: true
+    log-response-payload: true
+    log-message-payload: true
+    log-message-headers: false
+    max-payload-length: 10000
+    log-execution-time: true
+    log-processing-time: true
+    slow-request-threshold: 5000
+    slow-message-threshold: 3000
+    async-logging: false
+    async-thread-pool-size: 5
+    exclude-patterns: []
+    api-request:
+      enabled: true
+    message-event:
+      enabled: true
