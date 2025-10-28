@@ -1,0 +1,70 @@
+spring:
+  profiles:
+    active: test
+  
+  datasource:
+    # Testcontainers will override these values
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+  
+  rabbitmq:
+    # Testcontainers will override these values
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    
+  h2:
+    console:
+      enabled: true
+
+# Microservice logging configuration for tests
+microservice:
+  logging:
+    enabled: true
+    api-request:
+      enabled: true
+    message-event:
+      enabled: true
+
+# Test specific configurations
+test:
+  containers:
+    postgres:
+      enabled: true
+    rabbitmq:
+      enabled: true
+  
+  cucumber:
+    timeout: 30s
+    retry:
+      max-attempts: 3
+      delay: 1s
+
+# Payment service specific test configurations
+payment:
+  processing:
+    timeout: 10s
+    retry:
+      max-attempts: 3
+      backoff-multiplier: 2
+      initial-delay: 1s
+
+logging:
+  level:
+    com.example.paymentservice: DEBUG
+    org.springframework.amqp: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

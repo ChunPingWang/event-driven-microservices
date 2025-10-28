@@ -31,6 +31,9 @@ subprojects {
         
         dependencies {
             dependency 'org.projectlombok:lombok:1.18.30'
+            dependency 'io.cucumber:cucumber-java:7.15.0'
+            dependency 'io.cucumber:cucumber-spring:7.15.0'
+            dependency 'io.cucumber:cucumber-junit-platform-engine:7.15.0'
         }
     }
     

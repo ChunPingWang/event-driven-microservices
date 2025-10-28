@@ -103,167 +103,174 @@
   - 測試領域事件生成和發布
   - _需求: 需求7_
 
-- [ ] 4. 實現六角形架構的應用層
-  - 創建應用服務、命令處理器和查詢處理器
-  - 實現端口接口和適配器模式
-  - _需求: 需求5_
-
-- [ ] 4.1 實現訂單應用服務
-  - 創建 OrderApplicationService 協調訂單業務流程
-  - 實現 CreateOrderCommand 和 OrderCommandHandler
-  - 定義訂單相關的端口接口
-  - _需求: 需求1, 需求5_
-
-- [ ] 4.2 實現支付應用服務
-  - 創建 PaymentApplicationService 處理支付流程
-  - 實現 ProcessPaymentCommand 和 PaymentCommandHandler
-  - 定義支付相關的端口接口
-  - _需求: 需求3, 需求5_
-
-- [ ] 4.3 創建查詢處理器
-  - 實現 OrderQueryHandler 處理訂單查詢
-  - 實現 PaymentQueryHandler 處理支付查詢
-  - 定義查詢 DTO 和響應模型
-  - _需求: 需求1, 需求3_
-
-- [ ]* 4.4 編寫應用服務單元測試
-  - 測試命令處理邏輯和業務流程協調
-  - 測試查詢處理和數據轉換
-  - 使用 Mock 隔離外部依賴
-  - _需求: 需求7_
-
-- [ ] 5. 實現基礎設施層適配器
-  - 創建數據庫適配器、消息適配器和外部服務適配器
-  - 實現 Repository 模式和 Outbox Pattern
-  - _需求: 需求6, 需求8_
-
-- [ ] 5.1 實現數據庫適配器
-  - 創建 JPA 實體映射和 Repository 實現
-  - 實現 OrderRepositoryImpl 和 PaymentRepositoryImpl
-  - 配置數據庫連接池和事務管理
-  - _需求: 需求6_
-
-- [ ] 5.2 實現 Outbox Pattern
-  - 創建 OutboxEvent 實體和 OutboxRepository
-  - 實現 OutboxPublisher 定時任務
-  - 確保數據庫操作和消息發送的強一致性
-  - _需求: 需求8_
-
-- [ ] 5.3 實現 RabbitMQ 消息適配器
-  - 創建 MessagePublisherImpl 發送消息
-  - 實現 PaymentRequestListener 監聽支付請求
-  - 實現 PaymentConfirmationListener 監聽支付確認
-  - _需求: 需求2, 需求3_
-
-- [ ] 5.4 實現重試機制
-  - 創建 PaymentRetryService 處理支付重試
-  - 實現指數退避算法和最大重試限制
-  - 記錄重試歷史和狀態追蹤
-  - _需求: 需求2_
-
-- [ ]* 5.5 編寫基礎設施層集成測試
-  - 測試數據庫操作和事務處理
-  - 測試消息發送和接收功能
-  - 使用 Testcontainers 進行集成測試
-  - _需求: 需求7_
-
-- [ ] 6. 實現 Web 層控制器
-  - 創建 REST API 控制器和請求/響應模型
-  - 集成日誌記錄註解和異常處理
-  - _需求: 需求1_
-
-- [ ] 6.1 實現訂單控制器
-  - 創建 OrderController 處理 HTTP 請求
-  - 實現創建訂單和查詢訂單 API
-  - 添加 @LogApiRequest 註解記錄 API 調用
-  - _需求: 需求1_
-
-- [ ] 6.2 創建請求/響應模型
-  - 定義 CreateOrderRequest 和 OrderResponse DTO
-  - 實現請求驗證和數據轉換
-  - 配置 JSON 序列化和反序列化
-  - _需求: 需求1, 需求4_
-
-- [ ] 6.3 實現全局異常處理
-  - 創建 GlobalExceptionHandler 統一異常處理
-  - 定義錯誤響應格式和狀態碼
-  - 記錄異常日誌和錯誤追蹤
-  - _需求: 需求1_
-
-- [ ]* 6.4 編寫控制器單元測試
-  - 測試 API 端點和請求處理
-  - 測試異常處理和錯誤響應
-  - 使用 MockMvc 進行 Web 層測試
-  - _需求: 需求7_
-
-- [ ] 7. 實現領域事件處理
-  - 創建領域事件發布器和事件處理器
-  - 集成消息發送和日誌記錄
-  - _需求: 需求1, 需求3_
-
-- [ ] 7.1 實現領域事件發布器
-  - 創建 DomainEventPublisher 處理領域事件
-  - 實現事件到消息的轉換邏輯
-  - 添加 @LogMessageEvent 註解記錄事件處理
-  - _需求: 需求1, 需求3_
-
-- [ ] 7.2 實現事件處理器
-  - 創建 PaymentRequestedEventHandler
-  - 創建 PaymentProcessedEventHandler
-  - 實現事件處理邏輯和錯誤處理
-  - _需求: 需求1, 需求3_
-
-- [ ]* 7.3 編寫事件處理單元測試
-  - 測試事件發布和處理邏輯
-  - 測試事件到消息的轉換
-  - 驗證日誌記錄功能
-  - _需求: 需求7_
-
-- [ ] 8. 配置和部署準備
-  - 創建 Docker 配置和部署腳本
-  - 配置監控和日誌收集
-  - _需求: 需求5_
-
-- [ ] 8.1 創建 Docker 配置
-  - 編寫 Dockerfile 用於服務容器化
-  - 創建 docker-compose.yml 用於本地開發
-  - 配置多環境的容器編排
-  - _需求: 需求5_
-
-- [ ] 8.2 配置應用監控
-  - 集成 Spring Boot Actuator
-  - 配置健康檢查和指標收集
-  - 設置日誌格式和輸出配置
-  - _需求: 需求5_
-
-- [ ] 8.3 創建數據庫遷移腳本
-  - 編寫 Flyway 或 Liquibase 遷移腳本
-  - 創建表結構和索引定義
-  - 配置多環境的數據庫初始化
-  - _需求: 需求6_
-
-- [ ] 9. BDD 測試實現
+- [x] 4. BDD 測試實現 (測試先行)
   - 基於 Gherkin 場景實現 Cucumber 測試
   - 驗證端到端業務流程
+  - 定義業務場景和驗收標準
   - _需求: 需求7_
 
-- [ ] 9.1 實現 Cucumber 測試步驟定義
+- [x] 4.1 創建 Gherkin 業務場景
+  - 編寫訂單創建和支付流程的 Feature 文件
+  - 定義成功場景、失敗場景和邊界條件
+  - 描述用戶故事和驗收標準
+  - _需求: 需求1, 需求2, 需求3_
+
+- [x] 4.2 實現 Cucumber 測試步驟定義
   - 創建 OrderStepDefinitions 實現訂單相關場景
   - 創建 PaymentStepDefinitions 實現支付相關場景
   - 實現測試數據準備和清理
   - _需求: 需求7_
 
-- [ ] 9.2 配置 Cucumber 測試環境
+- [x] 4.3 配置 Cucumber 測試環境
   - 設置 Testcontainers 用於集成測試
   - 配置測試數據庫和消息隊列
   - 實現測試工具類和輔助方法
   - _需求: 需求7_
 
-- [ ]* 9.3 執行 BDD 測試場景
+- [x] 4.4 執行 BDD 測試場景
   - 運行成功訂單創建和支付流程測試
   - 運行錯誤處理和重試機制測試
   - 運行 Outbox Pattern 一致性測試
   - _需求: 需求7_
+
+- [ ] 5. 實現六角形架構的應用層
+  - 創建應用服務、命令處理器和查詢處理器
+  - 實現端口接口和適配器模式
+  - _需求: 需求5_
+
+- [ ] 5.1 實現訂單應用服務
+  - 創建 OrderApplicationService 協調訂單業務流程
+  - 實現 CreateOrderCommand 和 OrderCommandHandler
+  - 定義訂單相關的端口接口
+  - _需求: 需求1, 需求5_
+
+- [ ] 5.2 實現支付應用服務
+  - 創建 PaymentApplicationService 處理支付流程
+  - 實現 ProcessPaymentCommand 和 PaymentCommandHandler
+  - 定義支付相關的端口接口
+  - _需求: 需求3, 需求5_
+
+- [ ] 5.3 創建查詢處理器
+  - 實現 OrderQueryHandler 處理訂單查詢
+  - 實現 PaymentQueryHandler 處理支付查詢
+  - 定義查詢 DTO 和響應模型
+  - _需求: 需求1, 需求3_
+
+- [ ]* 5.4 編寫應用服務單元測試
+  - 測試命令處理邏輯和業務流程協調
+  - 測試查詢處理和數據轉換
+  - 使用 Mock 隔離外部依賴
+  - _需求: 需求7_
+
+- [ ] 6. 實現基礎設施層適配器
+  - 創建數據庫適配器、消息適配器和外部服務適配器
+  - 實現 Repository 模式和 Outbox Pattern
+  - _需求: 需求6, 需求8_
+
+- [ ] 6.1 實現數據庫適配器
+  - 創建 JPA 實體映射和 Repository 實現
+  - 實現 OrderRepositoryImpl 和 PaymentRepositoryImpl
+  - 配置數據庫連接池和事務管理
+  - _需求: 需求6_
+
+- [ ] 6.2 實現 Outbox Pattern
+  - 創建 OutboxEvent 實體和 OutboxRepository
+  - 實現 OutboxPublisher 定時任務
+  - 確保數據庫操作和消息發送的強一致性
+  - _需求: 需求8_
+
+- [ ] 6.3 實現 RabbitMQ 消息適配器
+  - 創建 MessagePublisherImpl 發送消息
+  - 實現 PaymentRequestListener 監聽支付請求
+  - 實現 PaymentConfirmationListener 監聽支付確認
+  - _需求: 需求2, 需求3_
+
+- [ ] 6.4 實現重試機制
+  - 創建 PaymentRetryService 處理支付重試
+  - 實現指數退避算法和最大重試限制
+  - 記錄重試歷史和狀態追蹤
+  - _需求: 需求2_
+
+- [ ]* 6.5 編寫基礎設施層集成測試
+  - 測試數據庫操作和事務處理
+  - 測試消息發送和接收功能
+  - 使用 Testcontainers 進行集成測試
+  - _需求: 需求7_
+
+- [ ] 7. 實現 Web 層控制器
+  - 創建 REST API 控制器和請求/響應模型
+  - 集成日誌記錄註解和異常處理
+  - _需求: 需求1_
+
+- [ ] 7.1 實現訂單控制器
+  - 創建 OrderController 處理 HTTP 請求
+  - 實現創建訂單和查詢訂單 API
+  - 添加 @LogApiRequest 註解記錄 API 調用
+  - _需求: 需求1_
+
+- [ ] 7.2 創建請求/響應模型
+  - 定義 CreateOrderRequest 和 OrderResponse DTO
+  - 實現請求驗證和數據轉換
+  - 配置 JSON 序列化和反序列化
+  - _需求: 需求1, 需求4_
+
+- [ ] 7.3 實現全局異常處理
+  - 創建 GlobalExceptionHandler 統一異常處理
+  - 定義錯誤響應格式和狀態碼
+  - 記錄異常日誌和錯誤追蹤
+  - _需求: 需求1_
+
+- [ ]* 7.4 編寫控制器單元測試
+  - 測試 API 端點和請求處理
+  - 測試異常處理和錯誤響應
+  - 使用 MockMvc 進行 Web 層測試
+  - _需求: 需求7_
+
+- [ ] 8. 實現領域事件處理
+  - 創建領域事件發布器和事件處理器
+  - 集成消息發送和日誌記錄
+  - _需求: 需求1, 需求3_
+
+- [ ] 8.1 實現領域事件發布器
+  - 創建 DomainEventPublisher 處理領域事件
+  - 實現事件到消息的轉換邏輯
+  - 添加 @LogMessageEvent 註解記錄事件處理
+  - _需求: 需求1, 需求3_
+
+- [ ] 8.2 實現事件處理器
+  - 創建 PaymentRequestedEventHandler
+  - 創建 PaymentProcessedEventHandler
+  - 實現事件處理邏輯和錯誤處理
+  - _需求: 需求1, 需求3_
+
+- [ ]* 8.3 編寫事件處理單元測試
+  - 測試事件發布和處理邏輯
+  - 測試事件到消息的轉換
+  - 驗證日誌記錄功能
+  - _需求: 需求7_
+
+- [ ] 9. 配置和部署準備
+  - 創建 Docker 配置和部署腳本
+  - 配置監控和日誌收集
+  - _需求: 需求5_
+
+- [ ] 9.1 創建 Docker 配置
+  - 編寫 Dockerfile 用於服務容器化
+  - 創建 docker-compose.yml 用於本地開發
+  - 配置多環境的容器編排
+  - _需求: 需求5_
+
+- [ ] 9.2 配置應用監控
+  - 集成 Spring Boot Actuator
+  - 配置健康檢查和指標收集
+  - 設置日誌格式和輸出配置
+  - _需求: 需求5_
+
+- [ ] 9.3 創建數據庫遷移腳本
+  - 編寫 Flyway 或 Liquibase 遷移腳本
+  - 創建表結構和索引定義
+  - 配置多環境的數據庫初始化
+  - _需求: 需求6_
 
 - [ ] 10. 系統集成和驗證
   - 整合所有組件並進行端到端測試
