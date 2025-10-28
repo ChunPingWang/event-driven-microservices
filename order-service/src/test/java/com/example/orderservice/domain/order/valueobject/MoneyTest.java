@@ -1,0 +1,304 @@
+package com.example.orderservice.domain.order.valueobject;
+
+import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+import java.util.Currency;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * 金額值對象單元測試
+ */
+class MoneyTest {
+    
+    @Test
+    void shouldCreateMoneyWithValidAmountAndCurrency() {
+        // Given
+        BigDecimal amount = new BigDecimal("100.00");
+        Currency currency = Currency.getInstance("USD");
+        
+        // When
+        Money money = new Money(amount, currency);
+        
+        // Then
+        assertEquals(new BigDecimal("100.00"), money.getAmount());
+        assertEquals("USD", money.getCurrency());
+        assertEquals(currency, money.getCurrencyInstance());
+    }
+    
+    @Test
+    void shouldCreateMoneyWithCurrencyCode() {
+        // Given
+        BigDecimal amount = new BigDecimal("100.00");
+        String currencyCode = "USD";
+        
+        // When
+        Money money = new Money(amount, currencyCode);
+        
+        // Then
+        assertEquals(new BigDecimal("100.00"), money.getAmount());
+        assertEquals("USD", money.getCurrency());
+    }
+    
+    @Test
+    void shouldRoundAmountToTwoDecimalPlaces() {
+        // Given
+        BigDecimal amount = new BigDecimal("100.123");
+        
+        // When
+        Money money = new Money(amount, "USD");
+        
+        // Then
+        assertEquals(new BigDecimal("100.12"), money.getAmount());
+    }
+    
+    @Test
+    void shouldThrowExceptionWhenCreatingMoneyWithNullAmount() {
+        // When & Then
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> new Money(null, "USD")
+        );
+        assertEquals("Amount cannot be null", exception.getMessage());
+    }
+    
+    @Test
+    void shouldThrowExceptionWhenCreatingMoneyWithNullCurrency() {
+        // When & Then
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> new Money(new BigDecimal("100.00"), (Currency) null)
+        );
+        assertEquals("Currency cannot be null", exception.getMessage());
+    }
+    
+    @Test
+    void shouldAllowCreatingMoneyWithZeroAmount() {
+        // When
+        Money money = new Money(BigDecimal.ZERO, "USD");
+        
+        // Then
+        assertEquals(BigDecimal.ZERO.setScale(2), money.getAmount());
+        assertEquals("USD", money.getCurrency());
+    }
+    
+    @Test
+    void shouldThrowExceptionWhenCreatingMoneyWithNegativeAmount() {
+        // When & Then
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> new Money(new BigDecimal("-10.00"), "USD")
+        );
+        assertEquals("Amount cannot be negative", exception.getMessage());
+    }
+    
+    @Test
+    void shouldCreateUsdMoney() {
+        // Given
+        BigDecimal amount = new BigDecimal("100.00");
+        
+        // When
+        Money money = Money.usd(amount);
+        
+        // Then
+        assertEquals(amount, money.getAmount());
+        assertEquals("USD", money.getCurrency());
+    }
+    
+    @Test
+    void shouldCreateTwdMoney() {
+        // Given
+        BigDecimal amount = new BigDecimal("3000.00");
+        
+        // When
+        Money money = Money.twd(amount);
+        
+        // Then
+        assertEquals(amount, money.getAmount());
+        assertEquals("TWD", money.getCurrency());
+    }
+    
+    @Test
+    void shouldCreateMoneyFromAmountAndCurrencyCode() {
+        // Given
+        BigDecimal amount = new BigDecimal("100.00");
+        String currencyCode = "EUR";
+        
+        // When
+        Money money = Money.of(amount, currencyCode);
+        
+        // Then
+        assertEquals(amount, money.getAmount());
+        assertEquals("EUR", money.getCurrency());
+    }
+    
+    @Test
+    void shouldAddMoneyWithSameCurrency() {
+        // Given
+        Money money1 = Money.usd(new BigDecimal("100.00"));
+        Money money2 = Money.usd(new BigDecimal("50.00"));
+        
+        // When
+        Money result = money1.add(money2);
+        
+        // Then
+        assertEquals(new BigDecimal("150.00"), result.getAmount());
+        assertEquals("USD", result.getCurrency());
+    }
+    
+    @Test
+    void shouldThrowExceptionWhenAddingMoneyWithDifferentCurrencies() {
+        // Given
+        Money usdMoney = Money.usd(new BigDecimal("100.00"));
+        Money twdMoney = Money.twd(new BigDecimal("3000.00"));
+        
+        // When & Then
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> usdMoney.add(twdMoney)
+        );
+        assertEquals("Cannot add different currencies", exception.getMessage());
+    }
+    
+    @Test
+    void shouldSubtractMoneyWithSameCurrency() {
+        // Given
+        Money money1 = Money.usd(new BigDecimal("100.00"));
+        Money money2 = Money.usd(new BigDecimal("30.00"));
+        
+        // When
+        Money result = money1.subtract(money2);
+        
+        // Then
+        assertEquals(new BigDecimal("70.00"), result.getAmount());
+        assertEquals("USD", result.getCurrency());
+    }
+    
+    @Test
+    void shouldThrowExceptionWhenSubtractingMoneyWithDifferentCurrencies() {
+        // Given
+        Money usdMoney = Money.usd(new BigDecimal("100.00"));
+        Money twdMoney = Money.twd(new BigDecimal("3000.00"));
+        
+        // When & Then
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> usdMoney.subtract(twdMoney)
+        );
+        assertEquals("Cannot subtract different currencies", exception.getMessage());
+    }
+    
+    @Test
+    void shouldThrowExceptionWhenSubtractionResultsInNegativeAmount() {
+        // Given
+        Money money1 = Money.usd(new BigDecimal("50.00"));
+        Money money2 = Money.usd(new BigDecimal("100.00"));
+        
+        // When & Then
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> money1.subtract(money2)
+        );
+        assertEquals("Result cannot be negative", exception.getMessage());
+    }
+    
+    @Test
+    void shouldReturnTrueWhenAmountIsZero() {
+        // Given
+        Money zeroMoney = new Money(BigDecimal.ZERO, "USD");
+        
+        // When & Then
+        assertTrue(zeroMoney.isZero());
+    }
+    
+    @Test
+    void shouldReturnTrueWhenSubtractionResultIsZero() {
+        // Given
+        Money money1 = Money.usd(new BigDecimal("100.00"));
+        Money money2 = Money.usd(new BigDecimal("100.00"));
+        
+        // When
+        Money result = money1.subtract(money2);
+        
+        // Then
+        assertTrue(result.isZero());
+    }
+    
+    @Test
+    void shouldReturnFalseWhenAmountIsNotZero() {
+        // Given
+        Money money = Money.usd(new BigDecimal("100.00"));
+        
+        // When & Then
+        assertFalse(money.isZero());
+    }
+    
+    @Test
+    void shouldReturnTrueWhenAmountIsGreaterThanOther() {
+        // Given
+        Money money1 = Money.usd(new BigDecimal("100.00"));
+        Money money2 = Money.usd(new BigDecimal("50.00"));
+        
+        // When & Then
+        assertTrue(money1.isGreaterThan(money2));
+        assertFalse(money2.isGreaterThan(money1));
+    }
+    
+    @Test
+    void shouldThrowExceptionWhenComparingDifferentCurrencies() {
+        // Given
+        Money usdMoney = Money.usd(new BigDecimal("100.00"));
+        Money twdMoney = Money.twd(new BigDecimal("3000.00"));
+        
+        // When & Then
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> usdMoney.isGreaterThan(twdMoney)
+        );
+        assertEquals("Cannot compare different currencies", exception.getMessage());
+    }
+    
+    @Test
+    void shouldBeEqualWhenAmountAndCurrencyAreEqual() {
+        // Given
+        Money money1 = Money.usd(new BigDecimal("100.00"));
+        Money money2 = Money.usd(new BigDecimal("100.00"));
+        
+        // When & Then
+        assertEquals(money1, money2);
+        assertEquals(money1.hashCode(), money2.hashCode());
+    }
+    
+    @Test
+    void shouldNotBeEqualWhenAmountsAreDifferent() {
+        // Given
+        Money money1 = Money.usd(new BigDecimal("100.00"));
+        Money money2 = Money.usd(new BigDecimal("50.00"));
+        
+        // When & Then
+        assertNotEquals(money1, money2);
+    }
+    
+    @Test
+    void shouldNotBeEqualWhenCurrenciesAreDifferent() {
+        // Given
+        Money usdMoney = Money.usd(new BigDecimal("100.00"));
+        Money twdMoney = Money.twd(new BigDecimal("100.00"));
+        
+        // When & Then
+        assertNotEquals(usdMoney, twdMoney);
+    }
+    
+    @Test
+    void shouldHaveCorrectToStringRepresentation() {
+        // Given
+        Money money = Money.usd(new BigDecimal("100.00"));
+        
+        // When
+        String toString = money.toString();
+        
+        // Then
+        assertEquals("100.00 USD", toString);
+    }
+}
