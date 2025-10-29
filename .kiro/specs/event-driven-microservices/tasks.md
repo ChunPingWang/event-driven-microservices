@@ -197,24 +197,24 @@
   - 使用 Testcontainers 進行集成測試
   - _需求: 需求7_
 
-- [ ] 7. 實現 Web 層控制器
+- [x] 7. 實現 Web 層控制器
   - 創建 REST API 控制器和請求/響應模型
   - 集成日誌記錄註解和異常處理
   - _需求: 需求1_
 
-- [ ] 7.1 實現訂單控制器
+- [x] 7.1 實現訂單控制器
   - 創建 OrderController 處理 HTTP 請求
   - 實現創建訂單和查詢訂單 API
   - 添加 @LogApiRequest 註解記錄 API 調用
   - _需求: 需求1_
 
-- [ ] 7.2 創建請求/響應模型
+- [x] 7.2 創建請求/響應模型
   - 定義 CreateOrderRequest 和 OrderResponse DTO
   - 實現請求驗證和數據轉換
   - 配置 JSON 序列化和反序列化
   - _需求: 需求1, 需求4_
 
-- [ ] 7.3 實現全局異常處理
+- [x] 7.3 實現全局異常處理
   - 創建 GlobalExceptionHandler 統一異常處理
   - 定義錯誤響應格式和狀態碼
   - 記錄異常日誌和錯誤追蹤
