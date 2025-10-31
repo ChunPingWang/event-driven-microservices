@@ -1,0 +1,82 @@
+groups:
+  - name: microservices.rules
+    rules:
+      # Service availability
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service {{ $labels.job }} is down"
+          description: "Service {{ $labels.job }} has been down for more than 1 minute."
+
+      # High error rate
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate on {{ $labels.job }}"
+          description: "Error rate is {{ $value }} errors per second on {{ $labels.job }}."
+
+      # High response time
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High response time on {{ $labels.job }}"
+          description: "95th percentile response time is {{ $value }}s on {{ $labels.job }}."
+
+      # Database connection issues
+      - alert: DatabaseConnectionHigh
+        expr: hikaricp_connections_active / hikaricp_connections_max > 0.8
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High database connection usage on {{ $labels.job }}"
+          description: "Database connection usage is {{ $value | humanizePercentage }} on {{ $labels.job }}."
+
+      # RabbitMQ queue size
+      - alert: RabbitMQQueueHigh
+        expr: rabbitmq_queue_messages > 1000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RabbitMQ queue {{ $labels.queue }} has high message count"
+          description: "Queue {{ $labels.queue }} has {{ $value }} messages."
+
+      # Memory usage
+      - alert: HighMemoryUsage
+        expr: (jvm_memory_used_bytes / jvm_memory_max_bytes) > 0.9
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage on {{ $labels.job }}"
+          description: "Memory usage is {{ $value | humanizePercentage }} on {{ $labels.job }}."
+
+      # Payment processing failures
+      - alert: PaymentProcessingFailures
+        expr: increase(payment_processing_failures_total[5m]) > 5
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High payment processing failures"
+          description: "{{ $value }} payment processing failures in the last 5 minutes."
+
+      # Order creation failures
+      - alert: OrderCreationFailures
+        expr: increase(order_creation_failures_total[5m]) > 5
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High order creation failures"
+          description: "{{ $value }} order creation failures in the last 5 minutes."

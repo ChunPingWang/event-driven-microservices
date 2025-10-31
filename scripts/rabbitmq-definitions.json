@@ -1,0 +1,141 @@
+{
+  "rabbit_version": "3.12.0",
+  "rabbitmq_version": "3.12.0",
+  "product_name": "RabbitMQ",
+  "product_version": "3.12.0",
+  "users": [
+    {
+      "name": "guest",
+      "password_hash": "YWRtaW4=",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [],
+  "parameters": [],
+  "global_parameters": [
+    {
+      "name": "cluster_name",
+      "value": "microservices-cluster"
+    }
+  ],
+  "policies": [
+    {
+      "vhost": "/",
+      "name": "ha-all",
+      "pattern": ".*",
+      "apply-to": "all",
+      "definition": {
+        "ha-mode": "all",
+        "ha-sync-mode": "automatic"
+      },
+      "priority": 0
+    }
+  ],
+  "queues": [
+    {
+      "name": "payment.request.queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "payment.dlx",
+        "x-dead-letter-routing-key": "payment.failed",
+        "x-message-ttl": 3600000
+      }
+    },
+    {
+      "name": "payment.confirmation.queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-dead-letter-exchange": "payment.dlx",
+        "x-dead-letter-routing-key": "payment.confirmation.failed",
+        "x-message-ttl": 3600000
+      }
+    },
+    {
+      "name": "payment.failed.queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    },
+    {
+      "name": "payment.confirmation.failed.queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "payment.exchange",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "payment.dlx",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "payment.exchange",
+      "vhost": "/",
+      "destination": "payment.request.queue",
+      "destination_type": "queue",
+      "routing_key": "payment.request",
+      "arguments": {}
+    },
+    {
+      "source": "payment.exchange",
+      "vhost": "/",
+      "destination": "payment.confirmation.queue",
+      "destination_type": "queue",
+      "routing_key": "payment.confirmation",
+      "arguments": {}
+    },
+    {
+      "source": "payment.dlx",
+      "vhost": "/",
+      "destination": "payment.failed.queue",
+      "destination_type": "queue",
+      "routing_key": "payment.failed",
+      "arguments": {}
+    },
+    {
+      "source": "payment.dlx",
+      "vhost": "/",
+      "destination": "payment.confirmation.failed.queue",
+      "destination_type": "queue",
+      "routing_key": "payment.confirmation.failed",
+      "arguments": {}
+    }
+  ]
+}

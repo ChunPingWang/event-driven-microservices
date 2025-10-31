@@ -1,0 +1,48 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "rules/*.yml"
+
+scrape_configs:
+  # Order Service
+  - job_name: 'order-service'
+    static_configs:
+      - targets: ['order-service:8080']
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # Payment Service
+  - job_name: 'payment-service'
+    static_configs:
+      - targets: ['payment-service:8081']
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # RabbitMQ
+  - job_name: 'rabbitmq'
+    static_configs:
+      - targets: ['rabbitmq:15692']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # PostgreSQL Order DB
+  - job_name: 'postgres-order'
+    static_configs:
+      - targets: ['order-db:9187']
+    scrape_interval: 15s
+
+  # PostgreSQL Payment DB
+  - job_name: 'postgres-payment'
+    static_configs:
+      - targets: ['payment-db:9187']
+    scrape_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
