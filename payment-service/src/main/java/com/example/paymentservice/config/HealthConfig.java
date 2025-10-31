@@ -1,17 +1,14 @@
 package com.example.paymentservice.config;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.boot.actuator.health.Health;
-import org.springframework.boot.actuator.health.HealthIndicator;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
 
 @Configuration
 public class HealthConfig {
 
+    // Temporarily commented out due to actuator dependency issues
+    // Will be re-enabled once actuator is properly configured
+    
+    /*
     @Bean
     public HealthIndicator databaseHealthIndicator(DataSource dataSource) {
         return () -> {
@@ -71,4 +68,5 @@ public class HealthConfig {
             }
         };
     }
+    */
 }
